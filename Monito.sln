@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monito.Core", "Monito.Core\Monito.Core.csproj", "{AD45AD3F-707F-4F0D-B696-E2EB4BE785F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monito.Infrastructure", "Monito.Infrastructure\Monito.Infrastructure.csproj", "{AFA08AAB-5EF5-4AD7-B14A-207E9144E70E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monito.BlazorApp.Server", "Monito.BlazorApp\Server\Monito.BlazorApp.Server.csproj", "{F7715E18-76E4-409F-8C8D-11A96A582FCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monito.BlazorApp.Client", "Monito.BlazorApp\Client\Monito.BlazorApp.Client.csproj", "{D1E626E8-19E2-4841-98F8-CB841DD7D71D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monito.BlazorApp.Shared", "Monito.BlazorApp\Shared\Monito.BlazorApp.Shared.csproj", "{4927B50F-2967-43D6-A7BB-8316D8A74231}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD45AD3F-707F-4F0D-B696-E2EB4BE785F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD45AD3F-707F-4F0D-B696-E2EB4BE785F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD45AD3F-707F-4F0D-B696-E2EB4BE785F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD45AD3F-707F-4F0D-B696-E2EB4BE785F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFA08AAB-5EF5-4AD7-B14A-207E9144E70E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA08AAB-5EF5-4AD7-B14A-207E9144E70E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFA08AAB-5EF5-4AD7-B14A-207E9144E70E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFA08AAB-5EF5-4AD7-B14A-207E9144E70E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7715E18-76E4-409F-8C8D-11A96A582FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7715E18-76E4-409F-8C8D-11A96A582FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7715E18-76E4-409F-8C8D-11A96A582FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7715E18-76E4-409F-8C8D-11A96A582FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E626E8-19E2-4841-98F8-CB841DD7D71D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E626E8-19E2-4841-98F8-CB841DD7D71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E626E8-19E2-4841-98F8-CB841DD7D71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E626E8-19E2-4841-98F8-CB841DD7D71D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4927B50F-2967-43D6-A7BB-8316D8A74231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4927B50F-2967-43D6-A7BB-8316D8A74231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4927B50F-2967-43D6-A7BB-8316D8A74231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4927B50F-2967-43D6-A7BB-8316D8A74231}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {996939E3-2B89-4591-8BF6-A9B9CEB8B62B}
+	EndGlobalSection
+EndGlobal

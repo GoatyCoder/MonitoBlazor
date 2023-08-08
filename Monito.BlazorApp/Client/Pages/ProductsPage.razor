@@ -1,0 +1,52 @@
+﻿@page "/products"
+@using Monito.Core.Entities;
+@inject HttpClient Http
+
+<h3>ProductsPage</h3>
+
+<ul>
+@foreach(var product in _products)
+{
+	
+	<li>
+		@product.Name (@product.Code)
+		<button>Edit</button>
+		<button @onclick="() => Delete(product.Id)">Delete</button>
+	</li>
+}
+</ul>
+
+<input @bind="newProduct.Code" placeholder="Cod. Prod." />
+<input @bind="newProduct.Name" placeholder="Prodotto" />
+<button @onclick="Add">Add</button>
+
+@code {
+	private List<Product> _products = new();
+	private Product newProduct = new();
+
+	private async Task Add()
+	{
+		var response = await Http.PostAsJsonAsync("api/products", newProduct);
+		response.EnsureSuccessStatusCode();
+		newProduct = new Product();
+		await LoadProducts();
+	}
+
+	private async Task Delete(int id)
+	{
+		await Http.DeleteAsync($"api/products/{id}");
+		_products.Remove(_products.Find(p => p.Id == id));
+		await LoadProducts();
+	}
+
+
+	private async Task LoadProducts()
+	{
+		_products = (await Http.GetFromJsonAsync<IEnumerable<Product>>("api/products")).ToList();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadProducts();
+	}
+}
