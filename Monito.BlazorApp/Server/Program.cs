@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddDbContext<MonitoDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MonitoDbConnection")));
@@ -18,6 +19,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseWebAssemblyDebugging();
+	app.UseSwagger();
+	app.UseSwaggerUI(c =>
+	{
+		c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blazor API V1");
+	});
 }
 else
 {

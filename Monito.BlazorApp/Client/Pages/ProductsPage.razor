@@ -10,7 +10,7 @@
 	
 	<li>
 		@product.Name (@product.Code)
-		<button>Edit</button>
+		<button @onclick="() => ShowEdit(product)">Edit</button>
 		<button @onclick="() => Delete(product.Id)">Delete</button>
 	</li>
 }
@@ -20,15 +20,46 @@
 <input @bind="newProduct.Name" placeholder="Prodotto" />
 <button @onclick="Add">Add</button>
 
+<br />
+<br />
+
+@if (isSelected)
+{
+	<div>
+		<input @bind="selectedProduct.Id" disabled />
+		<input @bind="selectedProduct.Code" />
+		<input @bind="selectedProduct.Name" />
+		<button @onclick="Edit">Edit</button>
+	</div>
+}
+
+
 @code {
 	private List<Product> _products = new();
 	private Product newProduct = new();
+	private Product selectedProduct = new();
+	private bool isSelected = false;
 
 	private async Task Add()
 	{
 		var response = await Http.PostAsJsonAsync("api/products", newProduct);
 		response.EnsureSuccessStatusCode();
-		newProduct = new Product();
+		newProduct = new();
+		await LoadProducts();
+	}
+
+	private void ShowEdit(Product product)
+	{
+		selectedProduct = product;
+		isSelected = true;
+	}
+
+	private async Task Edit()
+	{
+		var response = await Http.PutAsJsonAsync($"api/products/{selectedProduct.Id}", selectedProduct);
+		response.EnsureSuccessStatusCode();
+		selectedProduct = new();
+		isSelected = false;
 		await LoadProducts();
 	}
 
