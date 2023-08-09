@@ -26,23 +26,56 @@ namespace Monito.BlazorApp.Client.Services
 			}
 		}
 
-		public Task<Product> GetByIdAsync(int id)
+		public async Task<Product> GetByIdAsync(int id)
 		{
-			throw new NotImplementedException();
-		}
-		public Task AddAsync(Product entity)
-		{
-			throw new NotImplementedException();
-		}
+            try
+            {
+                var product = await _httpClient.GetFromJsonAsync<Product>($"api/Product/{id}");
+                return product;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-		public Task UpdateAsync(Product entity)
+		public async Task AddAsync(Product entity)
 		{
-			throw new NotImplementedException();
-		}
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/Product", entity);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-		public Task DeleteAsync(Product entity)
+		public async Task UpdateAsync(Product entity)
 		{
-			throw new NotImplementedException();
-		}
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"api/Product/{entity.Id}", entity);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+		public async Task DeleteAsync(Product entity)
+		{
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"api/Product/{entity.Id}");
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 	}
 }

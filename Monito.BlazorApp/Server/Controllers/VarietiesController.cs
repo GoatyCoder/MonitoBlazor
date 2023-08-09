@@ -6,9 +6,9 @@ namespace Monito.BlazorApp.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : GenericController<Product>
+    public class VarietiesController : GenericController<Variety>
     {
-        public ProductsController(IProductRepository repository) : base(repository)
+        public VarietiesController(IGenericRepository<Variety> repository) : base(repository)
         {
         }
     }

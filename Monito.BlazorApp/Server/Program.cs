@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MonitoDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MonitoDbConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IVarietyRepository, VarietyRepository>();
 
 var app = builder.Build();
 

@@ -14,5 +14,6 @@ builder.Services.AddHttpClient("Monito.BlazorApp.ServerAPI", client => client.Ba
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Monito.BlazorApp.ServerAPI"));
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IVarietyService, VarietyService>();
 
 await builder.Build().RunAsync();

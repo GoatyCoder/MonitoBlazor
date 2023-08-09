@@ -42,11 +42,5 @@ namespace Monito.Infrastructure.Data.Repositories
 			_dbSet.Remove(entity);
 			await _context.SaveChangesAsync();
 		}
-
-
-
-
-
-
 	}
 }

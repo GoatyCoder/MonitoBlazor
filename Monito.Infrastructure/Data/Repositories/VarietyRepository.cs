@@ -3,9 +3,9 @@ using Monito.Core.Interfaces.Repositories;
 
 namespace Monito.Infrastructure.Data.Repositories
 {
-    public class ProductRepository : GenericRepository<Product>, IProductRepository
+    public class VarietyRepository : GenericRepository<Variety>, IVarietyRepository
     {
-        public ProductRepository(MonitoDbContext context) : base(context)
+        public VarietyRepository(MonitoDbContext context) : base(context)
         {
         }
     }
