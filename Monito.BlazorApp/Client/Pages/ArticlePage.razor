@@ -1,0 +1,44 @@
+﻿@page "/articoli"
+
+<MudTable T="Article" Items="_articles" Hover="true" Striped="true" FixedHeader="true" Filter="FilterFunc1" @bind-SelectedItem="selectedItem" ReadOnly="false">
+	<ToolBarContent>
+		<MudText Typo="Typo.h6">Articoli</MudText>
+		<MudSpacer />
+		<MudButton OnClick="AddProduct" Color="Color.Primary" Variant="Variant.Filled">Add Product</MudButton>
+		<MudSpacer />
+		<MudTextField @bind-Value="searchString" Placeholder="Cerca..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+	</ToolBarContent>
+	<HeaderContent>
+		<MudTh>Cod. Articolo</MudTh>
+		<MudTh>Articolo</MudTh>
+		<MudTh>EAN</MudTh>
+	</HeaderContent>
+	<RowTemplate>
+		<MudTd DataLabel="Code">@context.Code</MudTd>
+		<MudTd DataLabel="Articolo">@context.Name</MudTd>
+		<MudTd DataLabel="EAN">@context.Ean</MudTd>
+	</RowTemplate>
+	<PagerContent>
+		<MudTablePager />
+	</PagerContent>
+</MudTable>
+
+<MudDialog @bind-IsVisible="@_isAddDialogOpen">
+    <DialogContent>
+        <EditForm Model="@_newArticle">
+            <MudTextField @bind-Value="@_newArticle.Code" Label="Code" />
+            <MudTextField @bind-Value="@_newArticle.Name" Label="Name" />
+            <MudTextField @bind-Value="@_newArticle.Ean" Label="Ean" />
+			<MudSelect T="int" @bind-Value="@_newArticle.ProductID" Label="Prodotto" >
+				@foreach(var product in _products)
+				{
+					<MudSelectItem Value="@product.Id">@product.Name (@product.Code)</MudSelectItem>
+				}
+			</MudSelect>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CancelAdd">Cancel</MudButton>
+        <MudButton OnClick="SaveAdd" Color="Color.Primary">Save</MudButton>
+    </DialogActions>
+</MudDialog>

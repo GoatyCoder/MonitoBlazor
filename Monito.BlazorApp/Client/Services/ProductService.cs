@@ -1,6 +1,5 @@
 ﻿using Monito.BlazorApp.Client.Services.Interfaces;
 using Monito.Core.Entities;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace Monito.BlazorApp.Client.Services
@@ -8,74 +7,47 @@ namespace Monito.BlazorApp.Client.Services
 	public class ProductService : IProductService
 	{
 		private readonly HttpClient _httpClient;
+
 		public ProductService(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}
 
-		public async Task<IEnumerable<Product>> GetAllAsync()
+		public async Task<IEnumerable<Product>> GetProducts()
 		{
-			try
-			{
-				var products = await _httpClient.GetFromJsonAsync<IEnumerable<Product>>("api/Product");
-				return products;
-			}
-			catch (Exception)
-			{
-				throw;
-			}
+			return await _httpClient.GetFromJsonAsync<IEnumerable<Product>>("api/product");
 		}
 
-		public async Task<Product> GetByIdAsync(int id)
+		public async Task<Product> GetProductById(int id)
 		{
-            try
-            {
-                var product = await _httpClient.GetFromJsonAsync<Product>($"api/Product/{id}");
-                return product;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
 
-		public async Task AddAsync(Product entity)
-		{
-            try
-            {
-                var response = await _httpClient.PostAsJsonAsync("api/Product", entity);
-                response.EnsureSuccessStatusCode();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+			return await _httpClient.GetFromJsonAsync<Product>($"api/product/{id}");
+		}
 
-		public async Task UpdateAsync(Product entity)
+		public async Task CreateProduct(Product product)
 		{
-            try
-            {
-                var response = await _httpClient.PutAsJsonAsync($"api/Product/{entity.Id}", entity);
-                response.EnsureSuccessStatusCode();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+			var response = await _httpClient.PostAsJsonAsync("api/product", product);
+			//response.EnsureSuccessStatusCode();
+		}
 
-		public async Task DeleteAsync(Product entity)
+		public async Task UpdateProduct(Product product)
 		{
-            try
-            {
-                var response = await _httpClient.DeleteAsync($"api/Product/{entity.Id}");
-                response.EnsureSuccessStatusCode();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+			await _httpClient.PutAsJsonAsync($"api/product/{product.Id}", product);
+		}
+
+		public async Task DeleteProduct(Product product)
+		{
+			await _httpClient.DeleteAsync($"api/product/{product.Id}");
+		}
+
+		public async Task<IEnumerable<Variety>> GetVarietiesByProductId(int productId)
+		{
+			return await _httpClient.GetFromJsonAsync<IEnumerable<Variety>>($"api/product/{productId}/varieties");
+		}
+
+		public async Task<Product> GetByCode(string code)
+		{
+			return await _httpClient.GetFromJsonAsync<Product>($"api/product/code/{code}");
+		}
 	}
 }

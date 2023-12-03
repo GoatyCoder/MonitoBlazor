@@ -9,10 +9,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMemoryCache();
 
 builder.Services.AddDbContext<MonitoDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MonitoDbConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IVarietyRepository, VarietyRepository>();
+builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+builder.Services.AddScoped<ISecondaryPackagingRepository, SecondaryPackagingRepository>();
+builder.Services.AddScoped<IPedanaRepository, PedanaRepository>();
 
 var app = builder.Build();
 

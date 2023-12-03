@@ -1,0 +1,18 @@
+﻿@page "/pedane"
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>PalletManager</h3>
+
+<MudDialog @bind-IsVisible="@_isAddDialogOpen">
+	<DialogContent>
+		<EditForm Model="@_newPedana">
+			<MudTextField @bind-Value="@_productCode" Label="Codice Prodotto" @oninput="UpdateProduct" @onkeydown="OnKeyDown" />
+			<MudTextField @bind-Value="@_productName" Label="Nome Prodotto" ReadOnly="true" />
+			<MudTextField @bind-Value="@_newPedana.Colli" Label="Nr. Colli" />
+		</EditForm>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="CancelAdd">Cancel</MudButton>
+		<MudButton OnClick="SaveAdd" Color="Color.Primary">Save</MudButton>
+	</DialogActions>
+</MudDialog>

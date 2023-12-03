@@ -1,0 +1,39 @@
+﻿@page "/test"
+@inject IProductService ProductService
+
+<h3>Test</h3>
+<p>@prodottoCercato.Name</p>
+<MudTable T="Person" Items="persons">
+	<HeaderContent>
+		<MudTh>Nome</MudTh>
+		<MudTh>Cognome</MudTh>
+	</HeaderContent>
+	<RowTemplate>
+		<MudTh>@context.Nome</MudTh>
+		<MudTh>@context.Cognome</MudTh>
+	</RowTemplate>
+</MudTable>
+
+@code {
+	private Product prodottoCercato;
+	private IEnumerable<Person> persons;
+	private class Person
+	{
+		public string Nome { get; set; }
+		public string Cognome { get; set; }
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		persons = new List<Person>()
+		{
+			new Person{Nome="Paolo", Cognome="Rossi"},
+			new Person{Nome="Vito", Cognome="Verdi"},
+			new Person{Nome="Pippo", Cognome="Marrone"},
+			new Person{Nome="Giusy", Cognome="Rosa"},
+			new Person{Nome="Luca", Cognome="Verdi"}
+		};
+
+		prodottoCercato = await ProductService.GetByCode("UVA");
+	}
+}

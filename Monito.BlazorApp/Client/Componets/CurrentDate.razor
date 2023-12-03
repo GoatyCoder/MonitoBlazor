@@ -1,0 +1,33 @@
+﻿@using System.Globalization;
+<MudText Typo="Typo.body1">@_currentDateText</MudText>
+<MudText Typo="Typo.body1">@_dayOfYearText</MudText>
+<MudText Typo="Typo.body1">@_weekNumberText</MudText>
+
+@code {
+    private string _currentDateText;
+    private string _dayOfYearText;
+    private string _weekNumberText;
+
+    protected override void OnInitialized()
+    {
+        var currentDate = DateTime.Now;
+        _currentDateText = currentDate.ToString("dd/MM/yy");
+        _dayOfYearText = $"Giorno dell'anno: {currentDate.DayOfYear}";
+        _weekNumberText = $"Settimana dell'anno: {GetIso8601WeekOfYear(currentDate)}";
+    }
+
+    public static int GetIso8601WeekOfYear(DateTime time)
+    {
+        // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll
+        // be the same week# as whatever Thursday, Friday or Saturday are,
+        // and we always get those right
+        DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+        if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+        {
+            time = time.AddDays(3);
+        }
+
+        // Return the week of our adjusted day
+        return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+    }
+}

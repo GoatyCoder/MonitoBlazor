@@ -1,0 +1,14 @@
+﻿@using Monito.Domain.Entities;
+
+
+<h3>Test</h3>
+
+@code {
+	private IEnumerable<Product> products;
+	private IEnumerable<Variety> varieties;
+
+	protected override Task OnInitializedAsync()
+	{
+		ProductController controller = new ProductController();
+	}
+}

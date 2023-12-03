@@ -2,7 +2,7 @@
 
 namespace Monito.Core.Interfaces.Repositories
 {
-    public interface IVarietyRepository : IGenericRepository<Variety>
-    {
-    }
+	public interface IVarietyRepository : IGenericRepository<Variety>
+	{
+	}
 }

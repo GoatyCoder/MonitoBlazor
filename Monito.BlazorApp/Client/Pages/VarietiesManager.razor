@@ -1,0 +1,42 @@
+﻿@page "/varieties-manager/{ProductId:int}"
+
+<h3>VarietiesManager</h3>
+
+<MudDialog @bind-IsVisible="_isAddVarietyDialogVisible">
+    <DialogContent>
+        <MudForm>
+            <MudTextField @bind-Value="_newVariety.Code" Label="Cod. Varietà" />
+            <MudTextField @bind-Value="_newVariety.Name" Label="Varietà" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="OnAddVariety">Aggiungi</MudButton>
+        <MudButton OnClick="OnCancelAddVariety">Annulla</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<MudDataGrid T="Variety" Items="_varieties" QuickFilter="_quickFilter" ReadOnly="false" EditMode="DataGridEditMode.Form">
+    <ToolBarContent>
+        <MudStack Row>
+            <MudText Typo="Typo.h6" Align="Align.Center">Varietà di @_product.Name (@_product.Code)</MudText>
+            <MudSpacer />
+            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Rounded.Add" OnClick="OnAddVarietyClicked" Color="Color.Primary" />
+        </MudStack>
+        <MudSpacer />
+        <MudTextField @bind-Value="_searchString" Placeholder="Cerca..." Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="v => v.Id" IsEditable="false" />
+        <PropertyColumn Property="v => v.Code" Title="Cod. Varietà" />
+        <PropertyColumn Property="v => v.Name" Title="Varietà" />
+        <TemplateColumn>
+            <CellTemplate>
+                <MudStack Row>
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(async () => await OnDeleteVariety(context.Item))" />
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>

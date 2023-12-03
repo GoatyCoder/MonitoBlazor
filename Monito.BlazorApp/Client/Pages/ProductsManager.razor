@@ -1,0 +1,46 @@
+﻿@page "/products-manager"
+
+<h3>Products Manager</h3>
+
+<MudDialog @bind-IsVisible="_isAddProductDialogVisible">
+	<DialogContent>
+		<MudForm>
+			<MudTextField @bind-Value="_newProduct.Code" Label="Cod. Prod." />
+			<MudTextField @bind-Value="_newProduct.Name" Label="Prodotto" />
+		</MudForm>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="OnAddProduct">Aggiungi</MudButton>
+		<MudButton OnClick="OnCancelAddProduct">Annulla</MudButton>
+	</DialogActions>
+</MudDialog>
+
+<MudDataGrid T="Product" Items="_products" QuickFilter="_quickFilter" ReadOnly="false" EditMode="DataGridEditMode.Form">
+	<ToolBarContent>
+		<MudStack Row>
+			<MudText Typo="Typo.h6" Align="Align.Center">Prodotti</MudText>
+			<MudSpacer />
+			<MudIconButton Size="@Size.Small" Icon="@Icons.Material.Rounded.Add" OnClick="OnAddProductClicked" Color="Color.Primary" />
+		</MudStack>
+		<MudSpacer />
+		<MudTextField @bind-Value="_searchString" Placeholder="Cerca..." Adornment="Adornment.Start" Immediate="true"
+					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+	</ToolBarContent>
+	<Columns>
+		<PropertyColumn Property="p => p.Id" IsEditable="false" Sortable="false" Filterable="false" />
+		<PropertyColumn Property="p => p.Code" Title="Cod. Prod." />
+		<PropertyColumn Property="p => p.Name" Title="Prodotto" />
+		<TemplateColumn IsEditable="false" Sortable="false" Filterable="false">
+			<CellTemplate>
+				<MudStack Row>
+					<MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+					<MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(async () => await OnDeleteProduct(context.Item))" />
+					<MudButton OnClick="@(() => OnVarietiesManager(context.Item))">Gestisci varietà</MudButton>
+				</MudStack>
+			</CellTemplate>
+		</TemplateColumn>
+	</Columns>
+	<PagerContent>
+		<MudDataGridPager T="Product" />
+	</PagerContent>
+</MudDataGrid>

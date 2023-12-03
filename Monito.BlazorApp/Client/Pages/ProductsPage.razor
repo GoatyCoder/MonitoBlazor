@@ -1,83 +1,180 @@
 ﻿@page "/products"
-@using Monito.Core.Entities;
-@inject HttpClient Http
 
-<h3>ProductsPage</h3>
+@inject IProductService ProductService
 
-<ul>
-@foreach(var product in _products)
+<h3>Products</h3>
+
+@if (showEditForm && editingProduct != null)
 {
-	
-	<li>
-		@product.Name (@product.Code)
-		<button @onclick="() => ShowEdit(product)">Edit</button>
-		<button @onclick="() => Delete(product.Id)">Delete</button>
-	</li>
+    <h4>@(editingProduct.Id == 0 ? "Add New Product" : "Edit Product")</h4>
+    <form @onsubmit="SaveProduct">
+        <div class="form-group">
+            <label>Name:</label>
+            <input class="form-control" @bind="editingProduct.Name" />
+        </div>
+        <div class="form-group">
+            <label>Code:</label>
+            <input class="form-control" @bind="editingProduct.Code" />
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+    </form>
 }
-</ul>
-
-<input @bind="newProduct.Code" placeholder="Cod. Prod." />
-<input @bind="newProduct.Name" placeholder="Prodotto" />
-<button @onclick="Add">Add</button>
-
-<br />
-<br />
-
-@if (isSelected)
+else if (selectedProductId != -1)
 {
-	<div>
-		<input @bind="selectedProduct.Id" disabled />
-		<input @bind="selectedProduct.Code" />
-		<input @bind="selectedProduct.Name" />
-		<button @onclick="Edit">Edit</button>
-	</div>
-}
+    <h4>Varieties of Selected Product</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Code</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (varieties != null)
+            {
+                @foreach (var variety in varieties)
+                {
+                    <tr>
+                        <td>@variety.Name</td>
+                        <td>@variety.Code</td>
+                        <td>
+                            <button class="btn btn-link" @onclick="() => OpenEditVarietyForm(variety)">Edit</button>
+                            <button class="btn btn-link text-danger" @onclick="() => DeleteVariety(variety)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 
+    <button class="btn btn-primary" @onclick="OpenAddVarietyForm">Add New Variety</button>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="OpenAddForm">Add New Product</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Code</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Code</td>
+                    <td>
+                        <button class="btn btn-link" @onclick="() => OpenEditForm(product)">Edit</button>
+                        <button class="btn btn-link text-danger" @onclick="() => DeleteProduct(product)">Delete</button>
+                        <button class="btn btn-link" @onclick="() => ShowVarieties(product.Id)">Show Varieties</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
-	private List<Product> _products = new();
-	private Product newProduct = new();
-	private Product selectedProduct = new();
-	private bool isSelected = false;
+    private IEnumerable<Product> products;
+    private IEnumerable<Variety> varieties;
+    private Product editingProduct;
+    private bool showEditForm = false;
+    private int selectedProductId = -1;
 
-	private async Task Add()
-	{
-		var response = await Http.PostAsJsonAsync("api/products", newProduct);
-		response.EnsureSuccessStatusCode();
-		newProduct = new();
-		await LoadProducts();
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
 
-	private void ShowEdit(Product product)
-	{
-		selectedProduct = product;
-		isSelected = true;
-	}
+    private async Task LoadData()
+    {
+        products = await ProductService.GetProducts();
+    }
 
-	private async Task Edit()
-	{
-		var response = await Http.PutAsJsonAsync($"api/products/{selectedProduct.Id}", selectedProduct);
-		response.EnsureSuccessStatusCode();
-		selectedProduct = new();
-		isSelected = false;
-		await LoadProducts();
-	}
+    private void OpenAddForm()
+    {
+        editingProduct = new Product();
+        showEditForm = true;
+    }
 
-	private async Task Delete(int id)
-	{
-		await Http.DeleteAsync($"api/products/{id}");
-		_products.Remove(_products.Find(p => p.Id == id));
-		await LoadProducts();
-	}
+    private async Task SaveProduct()
+    {
+        if (editingProduct.Id == 0)
+        {
+            await ProductService.CreateProduct(editingProduct);
+        }
+        else
+        {
+            await ProductService.UpdateProduct(editingProduct);
+        }
 
+        editingProduct = null;
+        showEditForm = false;
+        await LoadData();
+    }
 
-	private async Task LoadProducts()
-	{
-		_products = (await Http.GetFromJsonAsync<IEnumerable<Product>>("api/products")).ToList();
-	}
+    private void OpenEditForm(Product product)
+    {
+        editingProduct = new Product
+            {
+                Id = product.Id,
+                Code = product.Code,
+                Name = product.Name
+            };
+        showEditForm = true;
+    }
 
-	protected override async Task OnInitializedAsync()
-	{
-		await LoadProducts();
-	}
+    private async Task DeleteProduct(Product product)
+    {
+        await ProductService.DeleteProduct(product);
+        await LoadData();
+    }
+
+    private async Task<IEnumerable<Variety>> GetVarietiesBySelectedProductId()
+    {
+        if (selectedProductId != -1)
+        {
+            return await ProductService.GetVarietiesByProductId(selectedProductId);
+        }
+        return Enumerable.Empty<Variety>();
+    }
+
+    private void OpenEditVarietyForm(Variety variety)
+    {
+        // Implementa la logica per aprire il form di modifica della varietà
+    }
+
+    private async Task DeleteVariety(Variety variety)
+    {
+        throw new NotImplementedException();
+        //await ProductService.DeleteVariety(variety);
+        //await LoadData();
+    }
+
+    private void OpenAddVarietyForm()
+    {
+        // Implementa la logica per aprire il form di aggiunta di una nuova varietà
+    }
+
+    private void ShowVarieties(int productId)
+    {
+        selectedProductId = productId;
+        LoadVarieties(selectedProductId);
+    }
+
+    private async Task LoadVarieties(int productId)
+    {
+        varieties = await ProductService.GetVarietiesByProductId(productId);
+    }
+
+    private void CancelEdit()
+    {
+        editingProduct = null;
+        showEditForm = false;
+    }
 }
